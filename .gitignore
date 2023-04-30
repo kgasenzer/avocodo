@@ -3,9 +3,11 @@ poetry.lock
 # cache
 *.pyc
 __pycache__
-
+.pytest_cache
+.nox
 
 LJSpeech-1.1
 
 logs
 generated_files
+out

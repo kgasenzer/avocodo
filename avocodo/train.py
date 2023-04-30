@@ -1,5 +1,5 @@
-import os
 import argparse
+import os
 
 from omegaconf import OmegaConf
 from pytorch_lightning import Trainer
@@ -15,27 +15,29 @@ from avocodo.lightning_module import Avocodo
 class TBLogger(TensorBoardLogger):
     @rank_zero_only
     def log_metrics(self, metrics, step):
-        metrics.pop('epoch', None)
+        metrics.pop("epoch", None)
         return super().log_metrics(metrics, step)
 
+
 if __name__ == "__main__":
+    if not os.path.exists("./out/"):
+        os.makedirs("./out/")
+
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--group_name', default=None)
-    parser.add_argument('--input_wavs_dir', default='LJSpeech-1.1/wavs')
-    parser.add_argument('--input_mels_dir', default='ft_dataset')
-    parser.add_argument('--input_training_file',
-                        default='LJSpeech-1.1/training.txt')
-    parser.add_argument('--input_validation_file',
-                        default='LJSpeech-1.1/validation.txt')
-    parser.add_argument('--config', default='avocodo/configs/avocodo_v1.json')
-    parser.add_argument('--training_epochs', default=5000, type=int)
-    parser.add_argument('--fine_tuning', default=False, type=bool)
+    parser.add_argument("--group_name", default=None)
+    parser.add_argument("--input_wavs_dir", default="LJSpeech-1.1/wavs")
+    parser.add_argument("--input_mels_dir", default="ft_dataset")
+    parser.add_argument("--input_training_file", default="LJSpeech-1.1/training.txt")
+    parser.add_argument(
+        "--input_validation_file", default="LJSpeech-1.1/validation.txt"
+    )
+    parser.add_argument("--config", default="avocodo/configs/avocodo_v1.json")
+    parser.add_argument("--training_epochs", default=5000, type=int)
+    parser.add_argument("--fine_tuning", default=False, type=bool)
 
     a = parser.parse_args()
-    OmegaConf.register_new_resolver(
-        "from_args", lambda x: getattr(a, x)
-    )
+    OmegaConf.register_new_resolver("from_args", lambda x: getattr(a, x))
     OmegaConf.register_new_resolver(
         "dir", lambda base_dir, string: os.path.join(base_dir, string)
     )
@@ -65,12 +67,12 @@ if __name__ == "__main__":
                     time="#1363DF",
                     processing_speed="#1363DF",
                     metrics="#9BF9FE",
-                )
+                ),
             )
         ],
         logger=TensorBoardLogger("logs", name="Avocodo"),
         limit_train_batches=limit_train_batches,
         limit_val_batches=limit_val_batches,
-        log_every_n_steps=log_every_n_steps
+        log_every_n_steps=log_every_n_steps,
     )
     trainer.fit(model, dm)

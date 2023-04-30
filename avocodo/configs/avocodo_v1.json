@@ -25,7 +25,7 @@
     },
     "model": {
         "train": {
-            "training_epochs": "${from_args: 'training_epochs'}",
+            "training_epochs": "${from_args: 'training_epochs'}"
         },
         "audio": "${data}",
         "optimizer": {

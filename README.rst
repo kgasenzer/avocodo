@@ -22,7 +22,7 @@ We provide our implementation as an open source in this repository.
 Pre-requisites
 ===============
 
-1. Install pyenv
+1. Install pyenv or miniconda
   - `pyenv <https://github.com/pyenv/pyenv>`_
   - `pyenv automatic installer <https://github.com/pyenv/pyenv-installer>`_ (recommended)
 2. Clone this repository
@@ -37,8 +37,17 @@ Pre-requisites
     pip install poetry
 
     poetry install
+    
+  OR:
+  set up miniconda environment with
+  .. code-block::
+
+    conda create -n avocodo python=3.8
+    conda activate avocodo
+    pip install -r requirements.txt
+
 4. Download and extract the `LJ Speech dataset <https://keithito.com/LJ-Speech-Dataset>`_.
-  - Move all wav files to LJSpeech-1.1/wavs
+  - Move all wav files to LJSpeech-1.1/wavs or set symbolic link to corresponding data folder.
   - Split dataset into a trainset and a validationset.
   .. code-block::
 

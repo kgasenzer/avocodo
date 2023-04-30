@@ -1,10 +1,10 @@
 from dataclasses import dataclass
+
 from pytorch_lightning import LightningDataModule
 from pytorch_lightning.utilities import rank_zero_only
 from torch.utils.data import DataLoader
 
-from avocodo.meldataset import MelDataset
-from avocodo.meldataset import get_dataset_filelist
+from avocodo.meldataset import MelDataset, get_dataset_filelist
 
 
 @dataclass
@@ -36,13 +36,13 @@ class AvocodoData(LightningDataModule):
         self.save_hyperparameters(h)
 
     def prepare_data(self):
-        '''
-            download and prepare data
-        '''
+        """
+        download and prepare data
+        """
         self.training_filelist, self.validation_filelist = get_dataset_filelist(
             self.hparams.input_wavs_dir,
             self.hparams.input_training_file,
-            self.hparams.input_validation_file
+            self.hparams.input_validation_file,
         )
 
     def setup(self, stage=None):
@@ -59,7 +59,7 @@ class AvocodoData(LightningDataModule):
             n_cache_reuse=0,
             fmax_loss=self.hparams.fmax_for_loss,
             fine_tuning=self.hparams.fine_tuning,
-            base_mels_path=self.hparams.input_mels_dir
+            base_mels_path=self.hparams.input_mels_dir,
         )
 
     def train_dataloader(self):
@@ -69,7 +69,7 @@ class AvocodoData(LightningDataModule):
             shuffle=False,
             batch_size=self.hparams.batch_size,
             pin_memory=True,
-            drop_last=True
+            drop_last=True,
         )
 
     @rank_zero_only
@@ -89,10 +89,14 @@ class AvocodoData(LightningDataModule):
             n_cache_reuse=0,
             fmax_loss=self.hparams.fmax_for_loss,
             fine_tuning=self.hparams.fine_tuning,
-            base_mels_path=self.hparams.input_mels_dir
+            base_mels_path=self.hparams.input_mels_dir,
         )
-        return DataLoader(validset, num_workers=self.hparams.num_workers, shuffle=False,
-                          sampler=None,
-                          batch_size=1,
-                          pin_memory=True,
-                          drop_last=True)
+        return DataLoader(
+            validset,
+            num_workers=self.hparams.num_workers,
+            shuffle=False,
+            sampler=None,
+            batch_size=1,
+            pin_memory=True,
+            drop_last=True,
+        )

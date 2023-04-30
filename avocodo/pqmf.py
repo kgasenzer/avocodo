@@ -4,14 +4,13 @@
 #  MIT License (https://opensource.org/licenses/MIT)
 
 """Pseudo QMF modules."""
-'''
+"""
 Copied from https://github.com/kan-bayashi/ParallelWaveGAN/blob/master/parallel_wavegan/layers/pqmf.py
-'''
+"""
 
 import numpy as np
 import torch
 import torch.nn.functional as F
-
 from scipy.signal import kaiser
 
 
