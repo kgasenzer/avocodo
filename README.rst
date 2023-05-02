@@ -38,15 +38,14 @@ Pre-requisites
 
     poetry install
     
-  OR:
-  set up miniconda environment with
+4. OR: set up miniconda environment with
   .. code-block::
 
     conda create -n avocodo python=3.8
     conda activate avocodo
     pip install -r requirements.txt
 
-4. Download and extract the `LJ Speech dataset <https://keithito.com/LJ-Speech-Dataset>`_.
+5. Download and extract the `LJ Speech dataset <https://keithito.com/LJ-Speech-Dataset>`_.
   - Move all wav files to LJSpeech-1.1/wavs or set symbolic link to corresponding data folder.
   - Split dataset into a trainset and a validationset.
   .. code-block::
