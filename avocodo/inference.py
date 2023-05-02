@@ -82,7 +82,7 @@ def inference(a, conf):
                     audio = audio.cpu().numpy().astype("int16")
 
                     output_file = os.path.join(output_path, file_id.split("/")[-1])
-                    print(file_id)
+                    print(file_id, flush=True)
                     write(output_file, conf.audio.sampling_rate, audio)
     print("Done inference")
 
@@ -97,10 +97,9 @@ def main():
     parser.add_argument("--output_dir", type=str, default="generated_files")
     parser.add_argument("--script", type=bool, default=True)
     parser.add_argument("--device", type=str, default="cuda")
-    parser.add_argument(
-        "--all", action="store_true", description="Sample all data from LJSpeech."
-    )
+    parser.add_argument("--all", action="store_true")
     a = parser.parse_args()
+    print(a)
 
     conf = OmegaConf.load(
         os.path.join(a.checkpoint_path, f"version_{a.version}", "hparams.yaml")

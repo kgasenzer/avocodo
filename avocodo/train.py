@@ -34,7 +34,9 @@ if __name__ == "__main__":
     )
     parser.add_argument("--config", default="avocodo/configs/avocodo_v1.json")
     parser.add_argument("--training_epochs", default=5000, type=int)
+    parser.add_argument("--num_gpus", default=1, type=int)
     parser.add_argument("--fine_tuning", default=False, type=bool)
+    parser.add_argument('--resume_checkpoint_path', default=None, type=str, help="Path to the checkpoint to resume training/finetune on")
 
     a = parser.parse_args()
     OmegaConf.register_new_resolver("from_args", lambda x: getattr(a, x))
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     max_epochs = conf.model.train.training_epochs
 
     trainer = Trainer(
-        gpus=1,
+        gpus=a.num_gpus,
         max_epochs=max_epochs,
         callbacks=[
             RichProgressBar(
@@ -75,4 +77,4 @@ if __name__ == "__main__":
         limit_val_batches=limit_val_batches,
         log_every_n_steps=log_every_n_steps,
     )
-    trainer.fit(model, dm)
+    trainer.fit(model, dm, ckpt_path=a.resume_checkpoint_path)
